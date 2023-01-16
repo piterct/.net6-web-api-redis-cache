@@ -1,4 +1,5 @@
-﻿using Redis.Cache.Application.Inrterfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using Redis.Cache.Application.Inrterfaces.Repositories;
 using Redis.Cache.Application.Models;
 using Redis.Cache.Infra.DbContexts;
 
@@ -17,6 +18,12 @@ namespace Redis.Cache.Infra.Repositories
         {
             await _likeDbContext.Likes.AddAsync(like);
             await _likeDbContext.SaveChangesAsync();
+            return like;
+        }
+
+        public async Task<Like> Get(Guid id)
+        {
+            var like = await _likeDbContext.Likes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
             return like;
         }
 
