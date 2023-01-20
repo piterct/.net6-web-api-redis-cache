@@ -13,7 +13,7 @@ namespace Redis.Cache.Infra.Repositories.Cache
             _distributedCache = distributedCache;
         }
 
-        public async Task<T> GetValue<T>(Guid id)
+        public async Task<T?> GetValue<T>(Guid id)
         {
             var key = id.ToString().ToLower();
 
@@ -21,22 +21,32 @@ namespace Redis.Cache.Infra.Repositories.Cache
             if (result == null)
                 return default;
 
-            return JsonConvert.DeserializeObject<T>(result);
+            return JsonConvert.DeserializeObject<T?>(result);
         }
 
-        public Task<IEnumerable<T>> GetColletion<T>(string colletionKey)
+        public async Task<IEnumerable<T?>?> GetColletion<T>(string colletionKey)
         {
-            throw new NotImplementedException();
+            var result = await _distributedCache.GetStringAsync(colletionKey);
+            if (result == null)
+                return default;
+
+            return JsonConvert.DeserializeObject<IEnumerable<T?>>(result);
         }
 
-        public Task SetColletion<T>(string collectionKey, IEnumerable<T> colletion)
+        public async Task SetValue<T>(Guid id, T obj)
         {
-            throw new NotImplementedException();
+            var key = id.ToString().ToLower();
+            var newValue = JsonConvert.SerializeObject(obj);
+            await _distributedCache.SetStringAsync(key, newValue);
         }
 
-        public Task SetValue<T>(Guid id, T obj)
+        public async Task SetColletion<T>(string collectionKey, IEnumerable<T> colletion)
         {
-            throw new NotImplementedException();
+            var key = collectionKey.ToString().ToLower();
+            var newColletion = JsonConvert.SerializeObject(colletion);
+            await _distributedCache.SetStringAsync(key, newColletion);
         }
+
+
     }
 }
