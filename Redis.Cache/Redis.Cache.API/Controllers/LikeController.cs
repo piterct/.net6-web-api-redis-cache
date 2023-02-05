@@ -23,7 +23,7 @@ namespace Redis.Cache.API.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Post(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             try
             {
