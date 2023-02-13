@@ -2,6 +2,7 @@
 using Redis.Cache.Application.Inrterfaces.Repositories;
 using Redis.Cache.Application.Models;
 using Redis.Cache.Infra.DbContexts;
+using System.Xml.Linq;
 
 namespace Redis.Cache.Infra.Repositories
 {
@@ -25,6 +26,11 @@ namespace Redis.Cache.Infra.Repositories
         {
             var like = await _likeDbContext.Likes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
             return like;
+        }
+
+        private IEnumerable<Like> GenerateFakeLikes()
+        {
+            return Enumerable.Range(1, 20).Select(index => new Like($"Like {index}"));
         }
 
         public void Dispose()
