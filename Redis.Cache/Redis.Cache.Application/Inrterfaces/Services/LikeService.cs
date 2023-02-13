@@ -16,7 +16,7 @@ namespace Redis.Cache.Application.Inrterfaces.Services
             _cacheRepository = cacheRepository;
         }
 
-        private async Task<Like> GetLike(Guid id)
+        public async Task<Like?> GetLike(Guid id)
         {
             var like = await _cacheRepository.GetValue<Like>(id);
 
@@ -27,6 +27,19 @@ namespace Redis.Cache.Application.Inrterfaces.Services
             }
 
             return like;
+        }
+
+        public async Task<IEnumerable<Like?>> GetLikes()
+        {
+            var likes = await _cacheRepository.GetColletion<Like>(CACHE_COLLETION_KEY);
+
+            if(likes is null || !likes.Any())
+            {
+                likes = await _likeRepository.GetLikes();
+                await _cacheRepository.SetColletion(CACHE_COLLETION_KEY, likes);
+            }
+
+            return likes;
         }
     }
 }
