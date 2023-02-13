@@ -22,6 +22,7 @@ namespace Redis.Cache.API.Controllers
 
 
         [HttpGet]
+        [Route("likes/{id:guid}")]
         [AllowAnonymous]
         public async Task<IActionResult> Get(Guid id)
         {
@@ -30,6 +31,30 @@ namespace Redis.Cache.API.Controllers
                 var like = await _likeRepository.Get(id);
 
                 if (like == null)
+                    return NotFound(like);
+
+                return Ok(like);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError("An exception has occurred at {dateTime}. " +
+                 "Exception message: {message}." +
+                 "Exception Trace: {trace}", DateTime.UtcNow, exception.Message, exception.StackTrace);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("likes")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetLikes()
+        {
+            try
+            {
+                var like = await _likeRepository.GetLikes();
+
+                if (like == null || !like.Any())
                     return NotFound(like);
 
                 return Ok(like);
