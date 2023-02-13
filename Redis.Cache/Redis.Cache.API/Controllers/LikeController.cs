@@ -28,6 +28,10 @@ namespace Redis.Cache.API.Controllers
             try
             {
                 var like = await _likeRepository.Get(id);
+
+                if (like == null)
+                    return NotFound(like);
+
                 return Ok(like);
             }
             catch (Exception exception)
