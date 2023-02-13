@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Redis.Cache.Application.Inrterfaces.Repositories;
+using Redis.Cache.Application.Inrterfaces.Repositories.Cache;
 using Redis.Cache.Infra.DbContexts;
 using Redis.Cache.Infra.Repositories;
+using Redis.Cache.Infra.Repositories.Cache;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,7 @@ builder.Services.AddSwaggerGen();
 // Add services to the container.
 builder.Services.AddDbContext<LikeDbContext>(o => o.UseInMemoryDatabase("LikeDb"));
 builder.Services.AddScoped<ILikeRepository, LikeRepository>();
+builder.Services.AddScoped<ICacheRepository, CacheRepository>();
 
 
 var app = builder.Build();
