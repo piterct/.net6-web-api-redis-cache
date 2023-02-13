@@ -1,5 +1,6 @@
 ﻿using Redis.Cache.Application.Inrterfaces.Repositories;
 using Redis.Cache.Application.Inrterfaces.Repositories.Cache;
+using Redis.Cache.Application.Models;
 
 namespace Redis.Cache.Application.Inrterfaces.Services
 {
@@ -14,6 +15,18 @@ namespace Redis.Cache.Application.Inrterfaces.Services
             _likeRepository = likeRepository;
             _cacheRepository = cacheRepository;
         }
-    } 
+
+        private async Task<Like> GetLike(Guid id)
+        {
+            var like = await _cacheRepository.GetValue<Like>(id);
+
+            if (like is null)
+            {
+                like = await _likeRepository.Get(id);
+                await _cacheRepository.SetValue(id, like);
+            }
+
+            return like;
+        }
+    }
 }
- 
