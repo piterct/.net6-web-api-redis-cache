@@ -8,7 +8,9 @@ namespace Redis.Cache.Infra.Repositories.Cache
     {
         private readonly IDistributedCache _distributedCache;
 
-        public CacheRepository(IDistributedCache distributedCache)
+        public CacheRepository(
+            IDistributedCache distributedCache
+            )
         {
             _distributedCache = distributedCache;
         }
