@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Redis.Cache.API.Commands;
 using Redis.Cache.Application.Inrterfaces.Repositories;
+using Redis.Cache.Application.Inrterfaces.Repositories.Fakes;
 using Redis.Cache.Application.Models;
 
 namespace Redis.Cache.API.Controllers
@@ -13,11 +14,14 @@ namespace Redis.Cache.API.Controllers
     {
         private readonly ILogger<LikeController> _logger;
         private readonly ILikeRepository _likeRepository;
+        private readonly IFakeLikeRepository _fakeLikeRepository;
 
-        public LikeController(ILogger<LikeController> logger, ILikeRepository likeRepository)
+
+        public LikeController(ILogger<LikeController> logger, ILikeRepository likeRepository, IFakeLikeRepository fakeLikeRepository)
         {
             _logger = logger;
             _likeRepository = likeRepository;
+            _fakeLikeRepository = fakeLikeRepository;
         }
 
 
