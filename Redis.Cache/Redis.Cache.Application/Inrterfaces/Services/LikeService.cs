@@ -1,5 +1,6 @@
 ﻿using Redis.Cache.Application.Inrterfaces.Repositories;
 using Redis.Cache.Application.Inrterfaces.Repositories.Cache;
+using Redis.Cache.Application.Inrterfaces.Repositories.Fakes;
 using Redis.Cache.Application.Models;
 
 namespace Redis.Cache.Application.Inrterfaces.Services
@@ -8,12 +9,15 @@ namespace Redis.Cache.Application.Inrterfaces.Services
     {
         private readonly ILikeRepository _likeRepository;
         private readonly ICacheRepository _cacheRepository;
+        private readonly IFakeLikeRepository _fakeLikeRepository;
         private const string CACHE_COLLETION_KEY = "_AllLikes";
 
-        public LikeService(ILikeRepository likeRepository, ICacheRepository cacheRepository)
+        public LikeService(ILikeRepository likeRepository,
+            ICacheRepository cacheRepository, IFakeLikeRepository fakeLikeRepository)
         {
             _likeRepository = likeRepository;
             _cacheRepository = cacheRepository;
+            _fakeLikeRepository = fakeLikeRepository;
         }
 
         public async Task<Like?> GetLike(Guid id)
@@ -35,7 +39,7 @@ namespace Redis.Cache.Application.Inrterfaces.Services
 
             if(likes is null || !likes.Any())
             {
-                likes = await _likeRepository.GetLikes();
+                likes = await _fakeLikeRepository.GetLikes();
                 await _cacheRepository.SetColletion(CACHE_COLLETION_KEY, likes);
             }
 
