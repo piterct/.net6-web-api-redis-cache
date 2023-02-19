@@ -7,12 +7,18 @@ namespace Redis.Cache.Infra.Repositories.Cache
     public class CacheRepository : ICacheRepository
     {
         private readonly IDistributedCache _distributedCache;
+        private readonly DistributedCacheEntryOptions _options;
 
         public CacheRepository(
             IDistributedCache distributedCache
             )
         {
             _distributedCache = distributedCache;
+            _options = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(600),
+                SlidingExpiration = TimeSpan.FromSeconds(300),
+            };
         }
 
         public async Task<T?> GetValue<T>(Guid id)
@@ -28,7 +34,9 @@ namespace Redis.Cache.Infra.Repositories.Cache
 
         public async Task<IEnumerable<T?>?> GetColletion<T>(string colletionKey)
         {
-            var result = await _distributedCache.GetStringAsync(colletionKey);
+            var colletion = colletionKey.ToString().ToLower();
+
+            var result = await _distributedCache.GetStringAsync(colletion);
             if (result == null)
                 return default;
 
@@ -39,14 +47,14 @@ namespace Redis.Cache.Infra.Repositories.Cache
         {
             var key = id.ToString().ToLower();
             var newValue = JsonConvert.SerializeObject(obj);
-            await _distributedCache.SetStringAsync(key, newValue);
+            await _distributedCache.SetStringAsync(key, newValue, _options);
         }
 
         public async Task SetColletion<T>(string collectionKey, IEnumerable<T> colletion)
         {
             var key = collectionKey.ToString().ToLower();
             var newColletion = JsonConvert.SerializeObject(colletion);
-            await _distributedCache.SetStringAsync(key, newColletion);
+            await _distributedCache.SetStringAsync(key, newColletion, _options);
         }
 
 
