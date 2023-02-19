@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Redis.Cache.API.Commands;
 using Redis.Cache.Application.Inrterfaces.Repositories;
 using Redis.Cache.Application.Inrterfaces.Repositories.Fakes;
+using Redis.Cache.Application.Inrterfaces.Services;
 using Redis.Cache.Application.Models;
 
 namespace Redis.Cache.API.Controllers
@@ -15,13 +16,16 @@ namespace Redis.Cache.API.Controllers
         private readonly ILogger<LikeController> _logger;
         private readonly ILikeRepository _likeRepository;
         private readonly IFakeLikeRepository _fakeLikeRepository;
+        private readonly ILikeService _likeService;
 
 
-        public LikeController(ILogger<LikeController> logger, ILikeRepository likeRepository, IFakeLikeRepository fakeLikeRepository)
+        public LikeController(ILogger<LikeController> logger, ILikeRepository likeRepository,
+            IFakeLikeRepository fakeLikeRepository, ILikeService likeService)
         {
             _logger = logger;
             _likeRepository = likeRepository;
             _fakeLikeRepository = fakeLikeRepository;
+            _likeService = likeService;
         }
 
 
@@ -32,7 +36,7 @@ namespace Redis.Cache.API.Controllers
         {
             try
             {
-                var like = await _likeRepository.Get(id);
+                var like = await _likeService.GetLike(id);
 
                 if (like == null)
                     return NotFound(like);
