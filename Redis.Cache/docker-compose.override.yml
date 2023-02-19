@@ -1,13 +1,45 @@
-version: '3.4'
+﻿version: '3.4'
 
 services:
   redis.cache.api:
+    image: api:redis
+    build:
+       context: .
+       dockerfile: Redis.Cache.API/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_HTTPS_PORT=443
+
     ports:
-      - "80"
-      - "443"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - "8877:80" 
+      - "443:443"
+    networks:
+    - redis_demos
+    restart: always
+    depends_on:
+      redis:
+        condition: service_healthy
+  
+
+
+
+  redis:
+    image: redis:latest
+    restart: always
+    environment:
+      REDIS_PASSWORD: redis2022#=
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks: 
+      - redis_demos
+
+networks:
+   redis_demos:
+     driver: bridge
+
