@@ -15,16 +15,14 @@ namespace Redis.Cache.API.Controllers
     {
         private readonly ILogger<LikeController> _logger;
         private readonly ILikeRepository _likeRepository;
-        private readonly IFakeLikeRepository _fakeLikeRepository;
         private readonly ILikeService _likeService;
 
 
         public LikeController(ILogger<LikeController> logger, ILikeRepository likeRepository,
-            IFakeLikeRepository fakeLikeRepository, ILikeService likeService)
+            ILikeService likeService)
         {
             _logger = logger;
             _likeRepository = likeRepository;
-            _fakeLikeRepository = fakeLikeRepository;
             _likeService = likeService;
         }
 
@@ -60,7 +58,7 @@ namespace Redis.Cache.API.Controllers
         {
             try
             {
-                var like = await _likeRepository.GetLikes();
+                var like = await _likeService.GetLikes();
 
                 if (like == null || !like.Any())
                     return NotFound(like);
