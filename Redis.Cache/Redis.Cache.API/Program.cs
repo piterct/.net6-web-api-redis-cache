@@ -1,9 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Redis.Cache.Application.Inrterfaces.Repositories;
 using Redis.Cache.Application.Inrterfaces.Repositories.Cache;
+using Redis.Cache.Application.Inrterfaces.Repositories.Fakes;
+using Redis.Cache.Application.Inrterfaces.Services;
 using Redis.Cache.Infra.DbContexts;
 using Redis.Cache.Infra.Repositories;
 using Redis.Cache.Infra.Repositories.Cache;
+using Redis.Cache.Infra.Repositories.Fakes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +20,29 @@ builder.Services.AddSwaggerGen();
 
 // Add services to the container.
 builder.Services.AddDbContext<LikeDbContext>(o => o.UseInMemoryDatabase("LikeDb"));
+
+/* Using LocalHost WebApi Redis
+builder.Services.AddStackExchangeRedisCache(o => {
+    o.InstanceName = "Redis-Cache";
+    o.Configuration = "localhost:6379,password=redis2022#=";
+});
+*/
+
+
+
+builder.Services.AddStackExchangeRedisCache(o => {
+    o.InstanceName = "Redis-Cache";
+o.Configuration = "redis:6379,password=redis2022#=";
+});
+
+
+// Services
+builder.Services.AddScoped<ILikeService, LikeService>();
+
+// Repositories
 builder.Services.AddScoped<ILikeRepository, LikeRepository>();
 builder.Services.AddScoped<ICacheRepository, CacheRepository>();
+builder.Services.AddScoped<IFakeLikeRepository, FakeLikeRepository>();
 
 
 var app = builder.Build();
