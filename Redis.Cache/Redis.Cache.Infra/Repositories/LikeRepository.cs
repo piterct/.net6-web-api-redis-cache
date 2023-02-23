@@ -22,10 +22,15 @@ namespace Redis.Cache.Infra.Repositories
             return like;
         }
 
-        public async Task<Like> Get(Guid id)
+        public async Task<Like?> Get(Guid id)
         {
-            var like = await _likeDbContext.Likes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+            var like = await _likeDbContext.Likes.AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
             return like;
+        }
+
+        public async Task<IEnumerable<Like>> GetLikes()
+        {
+            return await Task.FromResult(GenerateFakeLikes());
         }
 
         private IEnumerable<Like> GenerateFakeLikes()
