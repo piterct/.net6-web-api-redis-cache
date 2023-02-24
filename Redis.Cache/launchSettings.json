@@ -5,7 +5,7 @@
       "commandVersion": "1.0",
       "serviceActions": {
         "redis": "StartWithoutDebugging",
-        "redis.cache.api": "StartDebugging"
+        "redis.cache.api": "StartWithoutDebugging"
       }
     }
   }
