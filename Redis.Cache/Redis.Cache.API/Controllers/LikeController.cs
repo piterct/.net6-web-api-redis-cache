@@ -10,6 +10,7 @@ using Redis.Cache.Application.Models;
 namespace Redis.Cache.API.Controllers
 {
     [ApiController]
+    [AllowAnonymous]
     [Route("/api/[controller]")]
     public class LikeController : Controller
     {
