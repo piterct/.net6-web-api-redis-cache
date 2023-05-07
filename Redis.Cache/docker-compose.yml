@@ -9,13 +9,7 @@ services:
     environment: {
             "TZ": "America/Sao_Paulo"
     }
-    networks:
-    - redis_demos
 
 
 
 
-networks:
-  redis_demos:
-    driver: bridge
-   
