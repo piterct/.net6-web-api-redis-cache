@@ -11,6 +11,14 @@ using Redis.Cache.Infra.Repositories.Fakes;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    //.AddJsonFile("appsettings.json", false, true)
+    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", false, true)
+    .AddEnvironmentVariables();
+
+IConfiguration configuration = builder.Configuration;
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
@@ -25,17 +33,9 @@ builder.Services.AddDbContext<LikeDbContext>(o => o.UseInMemoryDatabase("LikeDb"
 
 builder.Services.AddStackExchangeRedisCache(o =>
 {
-    o.InstanceName = "Redis-Cache";
-    o.Configuration = "localhost:6379,password=redis2022#=";
+    o.InstanceName = configuration["ConfigRedis:InstanceName"];
+    o.Configuration = configuration["ConfigRedis:ConfigurationInstance"];
 });
-
-
-//builder.Services.AddStackExchangeRedisCache(o =>
-//{
-//    o.InstanceName = "Redis-Cache";
-//    o.Configuration = "redis:6379,password=redis2022#=";
-//});
-
 
 
 // Services
@@ -51,7 +51,7 @@ var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
