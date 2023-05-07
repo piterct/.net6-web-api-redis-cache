@@ -21,4 +21,8 @@ RUN dotnet publish "Redis.Cache.API.csproj" -c Release -o /app/publish /p:UseApp
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+# Copy the built application from the build environment
+COPY --from=build-env /app/out .
+
 ENTRYPOINT ["dotnet", "Redis.Cache.API.dll"]
