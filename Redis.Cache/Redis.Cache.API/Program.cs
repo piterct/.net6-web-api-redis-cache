@@ -21,19 +21,21 @@ builder.Services.AddSwaggerGen();
 // Add services to the container.
 builder.Services.AddDbContext<LikeDbContext>(o => o.UseInMemoryDatabase("LikeDb"));
 
-/* Using LocalHost WebApi Redis
-builder.Services.AddStackExchangeRedisCache(o => {
+//Using LocalHost WebApi Redis
+
+builder.Services.AddStackExchangeRedisCache(o =>
+{
     o.InstanceName = "Redis-Cache";
     o.Configuration = "localhost:6379,password=redis2022#=";
 });
-*/
 
 
+//builder.Services.AddStackExchangeRedisCache(o =>
+//{
+//    o.InstanceName = "Redis-Cache";
+//    o.Configuration = "redis:6379,password=redis2022#=";
+//});
 
-builder.Services.AddStackExchangeRedisCache(o => {
-    o.InstanceName = "Redis-Cache";
-o.Configuration = "redis:6379,password=redis2022#=";
-});
 
 
 // Services
