@@ -8,6 +8,7 @@ using Redis.Cache.Infra.DbContexts;
 using Redis.Cache.Infra.Repositories;
 using Redis.Cache.Infra.Repositories.Cache;
 using Redis.Cache.Infra.Repositories.Fakes;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +36,9 @@ builder.Services.AddStackExchangeRedisCache(o =>
 {
     o.InstanceName = configuration["ConfigRedis:InstanceName"];
     o.Configuration = configuration["ConfigRedis:ConfigurationInstance"];
+
 });
+
 
 
 // Services
