@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redis.Cache.API", "Redis.Cache.API\Redis.Cache.API.csproj", "{EF4E7E2A-32A0-4451-B07B-8A2B55D08563}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Redis.Cache.API", "Redis.Cache.API\Redis.Cache.API.csproj", "{EF4E7E2A-32A0-4451-B07B-8A2B55D08563}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redis.Cache.Infra", "Redis.Cache.Infra\Redis.Cache.Infra.csproj", "{41680584-F157-402A-B37C-E99C196BF84D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Redis.Cache.Infra", "Redis.Cache.Infra\Redis.Cache.Infra.csproj", "{41680584-F157-402A-B37C-E99C196BF84D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redis.Cache.Application", "Redis.Cache.Application\Redis.Cache.Application.csproj", "{53DC9415-69E0-4DC5-AC9E-AD3413415A07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Redis.Cache.Application", "Redis.Cache.Application\Redis.Cache.Application.csproj", "{53DC9415-69E0-4DC5-AC9E-AD3413415A07}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{4722AA5F-B02F-4B55-843D-9017FC885E83}"
 EndProject
