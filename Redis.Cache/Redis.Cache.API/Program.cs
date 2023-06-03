@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Redis.Cache.Application.Inrterfaces.Repositories;
 using Redis.Cache.Application.Inrterfaces.Repositories.Cache;
 using Redis.Cache.Application.Inrterfaces.Repositories.Fakes;
@@ -8,7 +7,6 @@ using Redis.Cache.Infra.DbContexts;
 using Redis.Cache.Infra.Repositories;
 using Redis.Cache.Infra.Repositories.Cache;
 using Redis.Cache.Infra.Repositories.Fakes;
-using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
