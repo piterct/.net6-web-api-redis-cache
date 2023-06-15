@@ -57,6 +57,12 @@ namespace Redis.Cache.Infra.Repositories.Cache
             await _distributedCache.SetStringAsync(key, newColletion, _options);
         }
 
+        public async Task RemoveAsync(Guid id)
+        {
+            var key = id.ToString().ToLower();
+            await _distributedCache.RemoveAsync(key);
+        }
+
 
     }
 }
