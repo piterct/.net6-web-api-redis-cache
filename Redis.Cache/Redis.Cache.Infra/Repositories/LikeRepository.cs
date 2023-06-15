@@ -38,6 +38,12 @@ namespace Redis.Cache.Infra.Repositories
             return Enumerable.Range(1, 20).Select(index => new Like($"Like {index}"));
         }
 
+        public async Task RemoveAsync(Like like)
+        {
+            _likeDbContext.Remove(like);
+            await _likeDbContext.SaveChangesAsync();
+        }
+
         public void Dispose()
         {
             _likeDbContext?.Dispose();
