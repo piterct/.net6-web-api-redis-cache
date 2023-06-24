@@ -7,5 +7,6 @@ namespace Redis.Cache.Application.Inrterfaces.Repositories
         Task<Like> Add(Like like);
         Task<Like?> Get(Guid id);
         Task<IEnumerable<Like>> GetLikes();
+        Task RemoveAsync(Like like);
     }
 }
