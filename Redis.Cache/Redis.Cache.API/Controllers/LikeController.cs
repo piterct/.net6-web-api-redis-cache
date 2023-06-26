@@ -6,6 +6,7 @@ using Redis.Cache.Application.Inrterfaces.Repositories;
 using Redis.Cache.Application.Inrterfaces.Repositories.Fakes;
 using Redis.Cache.Application.Inrterfaces.Services;
 using Redis.Cache.Application.Models;
+using System;
 
 namespace Redis.Cache.API.Controllers
 {
@@ -39,6 +40,30 @@ namespace Redis.Cache.API.Controllers
 
                 if (like == null)
                     return NotFound(like);
+
+                return Ok(like);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError("An exception has occurred at {dateTime}. " +
+                 "Exception message: {message}." +
+                 "Exception Trace: {trace}", DateTime.UtcNow, exception.Message, exception.StackTrace);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpDelete]
+        [Route("likes/{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                var like = await _likeService.GetLike(id);
+
+                if (like is null)
+                    return NotFound("It was not possible to found the id.");
+
+                await _likeService.RemoveAsync(like);
 
                 return Ok(like);
             }
@@ -92,5 +117,8 @@ namespace Redis.Cache.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+
+
     }
 }
