@@ -6,5 +6,6 @@ namespace Redis.Cache.Application.Inrterfaces.Services
     {
         Task<Like?> GetLike(Guid id);
         Task<IEnumerable<Like?>> GetLikes();
+        Task RemoveAsync(Like like);
     }
 }
