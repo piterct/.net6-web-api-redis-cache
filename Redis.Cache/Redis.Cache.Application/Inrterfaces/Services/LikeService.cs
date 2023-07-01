@@ -37,13 +37,25 @@ namespace Redis.Cache.Application.Inrterfaces.Services
         {
             var likes = await _cacheRepository.GetColletion<Like>(CACHE_COLLETION_KEY);
 
-            if(likes is null || !likes.Any())
+            if (likes is null || !likes.Any())
             {
                 likes = await _fakeLikeRepository.GetLikes();
                 await _cacheRepository.SetColletion(CACHE_COLLETION_KEY, likes);
             }
 
             return likes;
+        }
+
+        public async Task RemoveAsync(Like like)
+        {
+            var cacheLike = await _cacheRepository.GetValue<Like>(like.Id);
+
+            if (cacheLike != null)
+            {
+                await _cacheRepository.RemoveAsync(like.Id);
+            }
+
+            await _likeRepository.RemoveAsync(like);
         }
     }
 }
