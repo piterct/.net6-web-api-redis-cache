@@ -2,7 +2,6 @@
 using Redis.Cache.Application.Inrterfaces.Repositories;
 using Redis.Cache.Application.Models;
 using Redis.Cache.Infra.DbContexts;
-using System.Xml.Linq;
 
 namespace Redis.Cache.Infra.Repositories
 {
