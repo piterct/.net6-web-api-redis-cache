@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Redis.Cache.API.Commands;
 using Redis.Cache.Application.Inrterfaces.Repositories;
-using Redis.Cache.Application.Inrterfaces.Repositories.Fakes;
 using Redis.Cache.Application.Inrterfaces.Services;
 using Redis.Cache.Application.Models;
-using System;
 
 namespace Redis.Cache.API.Controllers
 {
