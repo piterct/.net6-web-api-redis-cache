@@ -7,17 +7,15 @@ namespace Redis.Cache.Infra.Repositories.Cache
     public class CacheRepository : ICacheRepository
     {
         private readonly IDistributedCache _distributedCache;
-        private readonly DistributedCacheEntryOptions _options;
 
         public CacheRepository(
             IDistributedCache distributedCache
             )
         {
             _distributedCache = distributedCache;
-          
         }
 
-        public async Task<T?> GetValue<T>(Guid id, )
+        public async Task<T?> GetValue<T>(Guid id)
         {
             var key = id.ToString().ToLower();
 
@@ -39,18 +37,22 @@ namespace Redis.Cache.Infra.Repositories.Cache
             return JsonConvert.DeserializeObject<IEnumerable<T?>>(result);
         }
 
-        public async Task SetValue<T>(Guid id, T obj, int AbsoluteExpirationRelativeToNow = 300, int SlidingExpiration = 300)
+        public async Task SetValue<T>(Guid id, T obj,
+            int AbsoluteExpirationRelativeToNow = 300, int SlidingExpiration = 300)
         {
             var key = id.ToString().ToLower();
             var newValue = JsonConvert.SerializeObject(obj);
-            await _distributedCache.SetStringAsync(key, newValue, _options);
+            await _distributedCache
+                .SetStringAsync(key, newValue, DistributedCacheEntryOptions(AbsoluteExpirationRelativeToNow, SlidingExpiration));
         }
 
-        public async Task SetColletion<T>(string collectionKey, IEnumerable<T> colletion)
+        public async Task SetColletion<T>(string collectionKey, IEnumerable<T> colletion,
+            int AbsoluteExpirationRelativeToNow = 300, int SlidingExpiration = 300)
         {
             var key = collectionKey.ToString().ToLower();
             var newColletion = JsonConvert.SerializeObject(colletion);
-            await _distributedCache.SetStringAsync(key, newColletion, _options);
+            await _distributedCache
+                .SetStringAsync(key, newColletion, DistributedCacheEntryOptions(AbsoluteExpirationRelativeToNow, SlidingExpiration));
         }
 
         public async Task RemoveAsync(Guid id)
