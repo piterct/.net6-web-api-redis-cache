@@ -21,7 +21,7 @@ namespace Redis.Cache.Infra.Repositories.Cache
             };
         }
 
-        public async Task<T?> GetValue<T>(Guid id)
+        public async Task<T?> GetValue<T>(Guid id, )
         {
             var key = id.ToString().ToLower();
 
