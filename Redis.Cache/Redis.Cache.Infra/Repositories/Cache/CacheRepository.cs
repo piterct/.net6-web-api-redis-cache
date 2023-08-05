@@ -14,11 +14,7 @@ namespace Redis.Cache.Infra.Repositories.Cache
             )
         {
             _distributedCache = distributedCache;
-            _options = new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(600),
-                SlidingExpiration = TimeSpan.FromSeconds(300),
-            };
+          
         }
 
         public async Task<T?> GetValue<T>(Guid id, )
@@ -43,7 +39,7 @@ namespace Redis.Cache.Infra.Repositories.Cache
             return JsonConvert.DeserializeObject<IEnumerable<T?>>(result);
         }
 
-        public async Task SetValue<T>(Guid id, T obj)
+        public async Task SetValue<T>(Guid id, T obj, int AbsoluteExpirationRelativeToNow = 300, int SlidingExpiration = 300)
         {
             var key = id.ToString().ToLower();
             var newValue = JsonConvert.SerializeObject(obj);
@@ -61,6 +57,15 @@ namespace Redis.Cache.Infra.Repositories.Cache
         {
             var key = id.ToString().ToLower();
             await _distributedCache.RemoveAsync(key);
+        }
+
+        private DistributedCacheEntryOptions DistributedCacheEntryOptions(int AbsoluteExpirationRelativeToNow, int SlidingExpiration)
+        {
+            return  new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(AbsoluteExpirationRelativeToNow),
+                SlidingExpiration = TimeSpan.FromSeconds(SlidingExpiration),
+            };
         }
 
 
