@@ -38,21 +38,21 @@ namespace Redis.Cache.Infra.Repositories.Cache
         }
 
         public async Task SetValue<T>(Guid id, T obj,
-            int AbsoluteExpirationRelativeToNow = 300, int SlidingExpiration = 300)
+            int absoluteExpirationRelativeToNow = 300, int slidingExpiration = 300)
         {
             var key = id.ToString().ToLower();
             var newValue = JsonConvert.SerializeObject(obj);
             await _distributedCache
-                .SetStringAsync(key, newValue, DistributedCacheEntryOptions(AbsoluteExpirationRelativeToNow, SlidingExpiration));
+                .SetStringAsync(key, newValue, DistributedCacheEntryOptions(absoluteExpirationRelativeToNow, slidingExpiration));
         }
 
         public async Task SetColletion<T>(string collectionKey, IEnumerable<T> colletion,
-            int AbsoluteExpirationRelativeToNow = 300, int SlidingExpiration = 300)
+            int absoluteExpirationRelativeToNow = 300, int slidingExpiration = 300)
         {
             var key = collectionKey.ToString().ToLower();
             var newColletion = JsonConvert.SerializeObject(colletion);
             await _distributedCache
-                .SetStringAsync(key, newColletion, DistributedCacheEntryOptions(AbsoluteExpirationRelativeToNow, SlidingExpiration));
+                .SetStringAsync(key, newColletion, DistributedCacheEntryOptions(absoluteExpirationRelativeToNow, slidingExpiration));
         }
 
         public async Task RemoveAsync(Guid id)
@@ -61,12 +61,12 @@ namespace Redis.Cache.Infra.Repositories.Cache
             await _distributedCache.RemoveAsync(key);
         }
 
-        private DistributedCacheEntryOptions DistributedCacheEntryOptions(int AbsoluteExpirationRelativeToNow, int SlidingExpiration)
+        private DistributedCacheEntryOptions DistributedCacheEntryOptions(int absoluteExpirationRelativeToNow, int slidingExpiration)
         {
             return  new DistributedCacheEntryOptions
             {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(AbsoluteExpirationRelativeToNow),
-                SlidingExpiration = TimeSpan.FromSeconds(SlidingExpiration),
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(absoluteExpirationRelativeToNow),
+                SlidingExpiration = TimeSpan.FromSeconds(slidingExpiration),
             };
         }
 
